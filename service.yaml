@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: dev-home-assistant
-  namespace: dev-home-assistant
+  name: home-assistant
+  namespace: home-assistant
   labels:
-    app.kubernetes.io/instance: dev-home-assistant
+    app.kubernetes.io/instance: home-assistant
     app.kubernetes.io/name: home-assistant
 spec:
   selector:
-    app.kubernetes.io/instance: dev-home-assistant
+    app.kubernetes.io/instance: home-assistant
     app.kubernetes.io/name: home-assistant
   ports:
     - port: 8123
