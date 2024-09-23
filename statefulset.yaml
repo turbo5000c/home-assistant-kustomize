@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: home-assistant
+  labels:
+    app.kubernetes.io/instance: home-assistant
+    app.kubernetes.io/name: home-assistant
+spec:
+  replicas: 1
+  serviceName: home-assistant
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: home-assistant
+      app.kubernetes.io/name: home-assistant
+  podManagementPolicy: OrderedReady
+  revisionHistoryLimit: 10
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: home-assistant
+        app.kubernetes.io/name: home-assistant
+    spec:
+      containers:
+        - name: home-assistant
+          image: ghcr.io/home-assistant/home-assistant:2024.9.2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8123
+              name: http
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 50
+            periodSeconds: 10
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          volumeMounts:
+            - name: home-assistant
+              mountPath: /config
+            - name: config-files
+              mountPath: /config/packages
+        - name: sidecar
+          image: kiwigrid/k8s-sidecar:latest
+          imagePullPolicy: Always
+          env:
+            - name: LABEL
+              value: findme
+            - name: FOLDER
+              value: /config/packages
+            - name: RESOURCE
+              value: both
+          volumeMounts:
+            - name: config-files
+              mountPath: /config/packages
+      initContainers:
+        - name: init
+          image: debian:latest
+          imagePullPolicy: Always
+          command:
+            - bash
+            - '-c'
+            - /hass/fix_config.sh
+          volumeMounts:
+            - name: home-assistant
+              mountPath: /config
+            - name: home-assistant-config-init
+              mountPath: /hass/
+      nodeSelector:
+        app: hass
+      volumes:
+        - name: home-assistant
+          emptyDir: {}
+        - name: config-files
+          emptyDir: {}
+        - name: home-assistant-config-init
+          configMap:
+            name: home-assistant-config-init
+            defaultMode: 511
+      terminationGracePeriodSeconds: 30
+  volumeClaimTemplates:
+    - metadata:
+        name: home-assistant
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 5Gi
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      partition: 0
