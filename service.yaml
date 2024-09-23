@@ -11,8 +11,8 @@ spec:
     app.kubernetes.io/instance: home-assistant
     app.kubernetes.io/name: home-assistant
   ports:
-    - port: 8123
-      targetPort: 8080
+    - port: 8080
+      targetPort: http
       protocol: TCP
       name: http
   type: ClusterIP
