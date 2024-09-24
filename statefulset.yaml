@@ -96,7 +96,7 @@ spec:
       terminationGracePeriodSeconds: 30
   volumeClaimTemplates:
     - metadata:
-        name:home-assistant 
+        name: home-assistant 
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:
