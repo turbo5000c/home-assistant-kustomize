@@ -54,6 +54,8 @@ spec:
           volumeMounts:
             - name: home-assistant
               mountPath: /config
+          securityContext:
+            privileged: true         # Allow access to host devices
 #            - name: config-files
 #              mountPath: /config/packages
 #        - name: sidecar
