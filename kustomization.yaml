@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - statefulset.yaml
   - service.yaml
-  - configmap.yaml
+#  - configmap.yaml
   - rbac.yaml
