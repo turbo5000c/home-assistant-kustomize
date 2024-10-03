@@ -17,5 +17,5 @@
   "automerge": true,
   "automergeType": "pr",
   "automergeStrategy": "auto",
-  "requiredStatusChecks": null
+  "autoApprove": true
 }
