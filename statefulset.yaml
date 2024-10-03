@@ -59,7 +59,7 @@ spec:
 #            - name: config-files
 #              mountPath: /config/packages
 #        - name: sidecar
-#          image: kiwigrid/k8s-sidecar:1.27.6
+#          image: kiwigrid/k8s-sidecar:1.28.0
 #          imagePullPolicy: Always
 #          env:
 #            - name: LABEL
