@@ -84,8 +84,8 @@ spec:
 #              mountPath: /config
 #            - name: home-assistant-config-init
 #              mountPath: /hass/
-      nodeSelector:
-        app: hass
+#      nodeSelector:
+#        app: hass
       volumes:
         - name: home-assistant
           emptyDir: {}
