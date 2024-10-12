@@ -56,45 +56,9 @@ spec:
               mountPath: /config
           securityContext:
             privileged: true         # Allow access to host devices
-#            - name: config-files
-#              mountPath: /config/packages
-#        - name: sidecar
-#          image: kiwigrid/k8s-sidecar:1.28.0
-#          imagePullPolicy: Always
-#          env:
-#            - name: LABEL
-#              value: findme
-#            - name: FOLDER
-#              value: /config/packages
-#            - name: RESOURCE
-#              value: both
-#          volumeMounts:
-#            - name: config-files
-#              mountPath: /config/packages
-#      initContainers:
-#        - name: init
-#          image: debian:latest
-#          imagePullPolicy: Always
-#          command:
-#            - bash
-#            - '-c'
-#            - /hass/fix_config.sh
-#          volumeMounts:
-#            - name: home-assistant
-#              mountPath: /config
-#            - name: home-assistant-config-init
-#              mountPath: /hass/
-#      nodeSelector:
-#        app: hass
       volumes:
         - name: home-assistant
           emptyDir: {}
-#        - name: config-files
-#          emptyDir: {}
-#        - name: home-assistant-config-init
-#          configMap:
-#            name: home-assistant-config-init
-#            defaultMode: 511
       terminationGracePeriodSeconds: 30
   volumeClaimTemplates:
     - metadata:
