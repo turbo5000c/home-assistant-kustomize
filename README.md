@@ -15,8 +15,6 @@ The setup includes:
 
 - A Kubernetes Deployment for Home Assistant
 - Service definitions
-- Persistent Volume Claims (PVC) for persistent storage
-- ConfigMap for configuration files
 
 ## Configuration
 
