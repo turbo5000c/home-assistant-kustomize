@@ -50,7 +50,16 @@ If using FluxCD for GitOps:
 2. Add the repository to your Flux configuration by referencing it in your `kustomization.yaml` under the FluxCD setup.
 3. Flux will automatically detect changes and apply them to your cluster.
 
-flux kustomization.yaml example:
+kustomization.yaml:
+```yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+namespace: home-assistant
+kind: Kustomization
+resources:
+  - home-assistant-kustomize.yaml
+```
+
+home-assistant-kustomize.yaml:
 ```yaml
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
