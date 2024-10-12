@@ -33,7 +33,7 @@ The following configuration files may need to be adjusted based on your environm
 - **kustomization.yaml**: Update the image version and namespace as necessary.
 - **config.yaml**: Modify Home Assistant configurations as needed.
 - **service.yaml** Modify the Service as needed.
-- 
+  
 ### 3. Deploying with Kustomize
 
 To apply the configuration with Kustomize, use the following command:
