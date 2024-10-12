@@ -6,8 +6,7 @@ This repository contains a Kustomize setup for deploying [Home Assistant](https:
 
 - A Kubernetes cluster (tested with k0s, k3s, and microk8s)
 - Kustomize installed ([installation guide](https://kubectl.docs.kubernetes.io/installation/kustomize/))
-- FluxCD installed and configured for GitOps ([Flux installation guide](https://fluxcd.io/docs/installation/))
-- [Home Assistant](https://www.home-assistant.io/) Docker image available in your container registry (optional)
+- FluxCD installed and configured for GitOps ([Flux installation guide](https://fluxcd.io/docs/installation/)) (optional)
   
 ## Overview
 
@@ -33,8 +32,8 @@ The following configuration files may need to be adjusted based on your environm
 
 - **kustomization.yaml**: Update the image version and namespace as necessary.
 - **config.yaml**: Modify Home Assistant configurations as needed.
-- **storage.yaml**: Ensure PVC specifications match the storage class available on your cluster.
-
+- **service.yaml** Modify the Service as needed.
+- 
 ### 3. Deploying with Kustomize
 
 To apply the configuration with Kustomize, use the following command:
