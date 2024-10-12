@@ -22,9 +22,10 @@ The setup includes:
 
 Clone this repository to your local machine:
 
-
+```bash
     git clone https://github.com/turbo5000c/home-assistant-kustomize.git
     cd home-assistant-kustomize
+```
 
 ### 2. Update Configuration Files
 
@@ -49,6 +50,35 @@ If using FluxCD for GitOps:
 1. Ensure your FluxCD setup is configured to watch this repository or a specific directory in it.
 2. Add the repository to your Flux configuration by referencing it in your `kustomization.yaml` under the FluxCD setup.
 3. Flux will automatically detect changes and apply them to your cluster.
+
+flux kustomization.yaml example:
+```yaml
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: home-assistant
+spec:
+  interval: 2h
+  ref:
+    branch: main
+  url: https://github.com/turbo5000c/home-assistant-kustomize.git
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: home-assistant
+spec:
+  interval: 4h
+  path: "./"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-assistant
+    namespace: home-assistant
+  targetNamespace: home-assistant
+```
 
 ## Namespace Consideration
 
