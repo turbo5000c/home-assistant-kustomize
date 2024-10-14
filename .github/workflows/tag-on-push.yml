@@ -9,6 +9,10 @@ on:
       - 'statefulset.yaml'  # Only trigger when this file is modified
   workflow_dispatch:
 
+permissions:
+  contents: write
+
+
 jobs:
   tag:
     runs-on: ubuntu-latest
