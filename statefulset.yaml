@@ -57,6 +57,7 @@ spec:
           securityContext:
             privileged: true  # Allow access to host devices
       terminationGracePeriodSeconds: 30
+      volumes: []   #empty array
   volumeClaimTemplates:
     - metadata:
         name: home-assistant 
