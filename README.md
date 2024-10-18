@@ -31,7 +31,7 @@ Clone this repository to your local machine:
 The following configuration files may need to be adjusted based on your environment and requirements:
 
 - **kustomization.yaml**: Update the image version and namespace as necessary.
-- **config.yaml**: Modify Home Assistant configurations as needed.
+- **statefulset.yaml**: Modify Home Assistant deployment as needed.
 - **service.yaml** Modify the Service as needed.
   
 ### 3. Deploying with Kustomize
