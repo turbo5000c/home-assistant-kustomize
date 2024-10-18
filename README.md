@@ -158,7 +158,6 @@ Or, if using FluxCD, remove the repository or folder from your Flux configuratio
 
 ## Additional Notes
 
-- **Custom Configurations**: Adjust environment variables in `config.yaml` to enable specific Home Assistant features.
 - **Logging**: To view logs for Home Assistant, use:
 ```bash
       kubectl logs -f <pod-name> -n home-assistant
