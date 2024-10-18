@@ -101,6 +101,9 @@ spec:
 #            name: home-assistant
 #            mountPath: /data/home-assistant/
 #            type: DirectoryOrCreate
+#      target:
+#        kind: StatefulSet
+#        name: home-assistant
 ```
 
 ## Namespace Consideration
