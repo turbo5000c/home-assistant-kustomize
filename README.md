@@ -86,6 +86,21 @@ spec:
     name: home-assistant
     namespace: home-assistant
   targetNamespace: home-assistant
+# To use hostpath storage uncomment the line below
+#  patches:
+#    - patch: |
+#        - op: add
+#          path: /spec/template/spec/volumes/-
+#          value:
+#            name: home-assistant
+#            hostPath:
+#              path: /config
+#        - op: add
+#          path: /spec/template/spec/containers/0/volumeMounts/-
+#          value:
+#            name: home-assistant
+#            mountPath: /data/home-assistant/
+#            type: DirectoryOrCreate
 ```
 
 ## Namespace Consideration
