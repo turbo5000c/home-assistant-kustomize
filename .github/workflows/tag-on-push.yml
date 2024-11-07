@@ -40,3 +40,11 @@ jobs:
         if: env.image_tag != ''
         run: |
           git push origin "$image_tag"
+          
+      - name: Send message to Slack
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"New HASS GitHub Tag: $image_tag"}' \
+          $SLACK_WEBHOOK_URL
