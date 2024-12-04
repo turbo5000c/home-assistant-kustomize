@@ -6,8 +6,6 @@ metadata:
     app.kubernetes.io/instance: home-assistant
     app.kubernetes.io/name: home-assistant
 spec:
-  updateStrategy:
-    type: RollingUpdate
   replicas: 1
   serviceName: home-assistant
   selector:
