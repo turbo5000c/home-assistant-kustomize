@@ -74,7 +74,7 @@ metadata:
 spec:
   interval: 2h
   ref:
-    branch: main
+    semver: '>=2024.1.1'
   url: https://github.com/turbo5000c/home-assistant-kustomize.git
 
 ---
