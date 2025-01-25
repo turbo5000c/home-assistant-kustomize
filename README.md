@@ -30,9 +30,10 @@ Clone this repository to your local machine:
 
 The following configuration files may need to be adjusted based on your environment and requirements:
 
-- **kustomization.yaml**: Update the image version and namespace as necessary.
+- **kustomization.yaml**: Uncomment namespace.yaml
 - **statefulset.yaml**: Modify Home Assistant deployment as needed.
 - **service.yaml** Modify the Service as needed.
+- **ingressroute.yaml** Fix to your traefik ingress if using traefik.
   
 ### 3. Deploying with Kustomize
 
@@ -42,7 +43,8 @@ To apply the configuration with Kustomize, use the following command:
 ```
 This command applies the resources in the current directory, using Kustomize to manage overlays and configurations.
 
-### 4. Deploying with FluxCD
+
+## Deploying with FluxCD
 
 If using FluxCD for GitOps:
 
@@ -50,23 +52,31 @@ If using FluxCD for GitOps:
 2. Add the repository to your Flux configuration by referencing it in your `kustomization.yaml` under the FluxCD setup.
 3. Flux will automatically detect changes and apply them to your cluster.
 
+### 1. Clone the Repository
+
+Clone this repository to your local machine:
+
+```bash
+    cd your/fluxcd/apps/base
+    git clone https://github.com/turbo5000c/home-assistant-kustomize.git
+    cd home-assistant-kustomize
+```
+
+### 2. Add Kustomize file and fluxcd manifest.
+
 kustomization.yaml:
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 namespace: home-assistant
 kind: Kustomization
 resources:
+  - namespace.yaml
   - home-assistant-kustomize.yaml
 #  - ingressroute.yaml #traefik ingressroute
 ```
 
 home-assistant-kustomize.yaml:
 ```yaml
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: home-assistant 
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
