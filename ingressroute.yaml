@@ -1,0 +1,23 @@
+---
+# Home Assistant
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: home-assistant-ingressroute
+  namespace: home-assistant
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - kind: Rule
+    match: Host(`hass.example.local`)
+    middlewares:
+    - name: default-headers
+    services:
+    - name:  home-assistant
+      namespace: home-assistant
+      port: 8080
+  tls:
+    secretName: your-tls-cert
