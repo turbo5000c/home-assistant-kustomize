@@ -57,6 +57,7 @@ namespace: home-assistant
 kind: Kustomization
 resources:
   - home-assistant-kustomize.yaml
+#  - ingressroute.yaml #traefik ingressroute
 ```
 
 home-assistant-kustomize.yaml:
