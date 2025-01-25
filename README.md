@@ -62,6 +62,11 @@ resources:
 home-assistant-kustomize.yaml:
 ```yaml
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: home-assistant 
+---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
