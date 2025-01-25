@@ -92,6 +92,7 @@ spec:
     namespace: home-assistant
   targetNamespace: home-assistant
 # To use hostpath storage uncomment the line below
+# Also is an example to mount the host bluetooth
 #  patches:
 #    - patch: |
 #        - op: add
@@ -106,6 +107,18 @@ spec:
 #            name: home-assistant
 #            mountPath: /data/home-assistant/
 #            type: DirectoryOrCreate
+#        - op: add                                    # bluetooth Start
+#          path: /spec/template/spec/volumes/-
+#          value:
+#            name: bluetooth
+#            hostPath:
+#              path: /run/dbus
+#        - op: add
+#          path: /spec/template/spec/containers/0/volumeMounts/-
+#          value:
+#            name: bluetooth
+#            mountPath: /run/dbus
+#            readOnly: true                            # bluetooth End
 #      target:
 #        kind: StatefulSet
 #        name: home-assistant
