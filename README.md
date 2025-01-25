@@ -46,7 +46,7 @@ This command applies the resources in the current directory, using Kustomize to 
 
 ## Deploying with FluxCD
 
-If using FluxCD for GitOps:
+If using FluxCD:
 
 1. Ensure your FluxCD setup is configured to watch this repository or a specific directory in it.
 2. Add the repository to your Flux configuration by referencing it in your `kustomization.yaml` under the FluxCD setup.
