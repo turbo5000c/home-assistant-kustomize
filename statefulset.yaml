@@ -55,7 +55,9 @@ spec:
             - name: home-assistant
               mountPath: /config
           securityContext:
-            privileged: true  # Allow access to host devices
+            allowPrivilegeEscalation: false
+            capabilities:
+              add: ["NET_RAW", "NET_ADMIN"]
       terminationGracePeriodSeconds: 30
       volumes: []   #empty array
   volumeClaimTemplates:
