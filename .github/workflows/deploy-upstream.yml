@@ -1,0 +1,89 @@
+# Squashes this repo's history and pushes a clean copy to an upstream repository.
+# Requires an UPSTREAM_DEPLOY_TOKEN secret with write access to the upstream repo.
+name: Deploy Upstream
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_branch:
+        description: 'Branch in this repository to deploy from'
+        required: true
+        default: 'main'
+      upstream_repo:
+        description: 'Upstream repository to push to (format: owner/repo-name)'
+        required: true
+      upstream_branch:
+        description: 'Branch in the upstream repository to push to'
+        required: false
+        default: 'main'
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_branch }}
+          fetch-depth: 0  # full history required for commit summary and squash
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Validate inputs
+        env:
+          UPSTREAM_REPO: ${{ inputs.upstream_repo }}
+        run: |
+          if ! echo "$UPSTREAM_REPO" | grep -qE '^[A-Za-z0-9_][A-Za-z0-9_.-]*/[A-Za-z0-9_][A-Za-z0-9_.-]*$'; then
+            echo "Error: upstream_repo must be in the format 'owner/repo-name'"
+            exit 1
+          fi
+
+      - name: Replace repository references
+        env:
+          UPSTREAM_REPO: ${{ inputs.upstream_repo }}
+        run: |
+          CURRENT_REPO="turbo5000c/home-assistant-kustomize"
+          grep -rlI "$CURRENT_REPO" --exclude-dir='.git' . 2>/dev/null | while read -r file; do
+            sed -i "s|${CURRENT_REPO}|${UPSTREAM_REPO}|g" "$file"
+          done || true
+          echo "Replaced all instances of '${CURRENT_REPO}' with '${UPSTREAM_REPO}'"
+
+      - name: Squash all commits into a single deployment commit
+        env:
+          UPSTREAM_REPO: ${{ inputs.upstream_repo }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+        run: |
+          COMMIT_COUNT=$(git rev-list --count HEAD)
+
+          # Build commit message in a temp file to safely handle special characters
+          {
+            printf "deploy: squashed %s commits from %s\n\n" "$COMMIT_COUNT" "$SOURCE_BRANCH"
+            printf "Repository references updated: turbo5000c/home-assistant-kustomize -> %s\n\n" "$UPSTREAM_REPO"
+            printf "Commit history:\n"
+            git log --pretty=format:"- %s (%h)" --max-count=50
+          } > /tmp/commit-message.txt
+
+          # Create an orphan branch so the entire history is squashed into one commit
+          git checkout --orphan deploy-squashed
+          git add -A
+          git commit -F /tmp/commit-message.txt
+
+      - name: Push to upstream repository
+        env:
+          UPSTREAM_TOKEN: ${{ secrets.UPSTREAM_DEPLOY_TOKEN }}
+          UPSTREAM_REPO: ${{ inputs.upstream_repo }}
+          UPSTREAM_BRANCH: ${{ inputs.upstream_branch }}
+        run: |
+          # Store credentials safely so the token does not appear in the remote URL
+          git config --global credential.helper store
+          printf 'https://x-access-token:%s@github.com\n' "$UPSTREAM_TOKEN" >> ~/.git-credentials
+          chmod 600 ~/.git-credentials
+
+          git remote add upstream "https://github.com/${UPSTREAM_REPO}.git"
+          git push upstream "deploy-squashed:${UPSTREAM_BRANCH}" --force
