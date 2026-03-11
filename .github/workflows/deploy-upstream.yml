@@ -32,8 +32,8 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "turbo5000c"
+          git config user.email "turbo5000c@hotmail.com"
 
       - name: Validate inputs
         env:
