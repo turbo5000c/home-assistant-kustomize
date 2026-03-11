@@ -18,6 +18,6 @@ spec:
     services:
     - name:  home-assistant
       namespace: home-assistant
-      port: 8080
+      port: 8123
   tls:
     secretName: your-tls-cert

@@ -1,7 +1,9 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: home-assistant
 resources:
-#  - namespace.yaml #uncomment to use auto create namespace
+  - namespace.yaml
   - statefulset.yaml
   - service.yaml
+#  - ingressroute.yaml  # Uncomment to enable Traefik IngressRoute
