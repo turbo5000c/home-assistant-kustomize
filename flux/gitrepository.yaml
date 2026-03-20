@@ -1,0 +1,18 @@
+---
+# FluxCD GitRepository — points Flux at the home-assistant-kustomize source repository.
+# Apply this to your Flux management cluster alongside flux/kustomization.yaml.
+# This file is also consumed by dawg-io/fluxcd-ezy as the GitRepository source for home-assistant.
+#
+# Docs: https://fluxcd.io/flux/components/source/gitrepositories/
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: home-assistant-kustomize
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: https://github.com/turbo5000c/home-assistant-kustomize
+  ref:
+    # Tracks git tags that match the Home Assistant release version (e.g. 2026.3.2).
+    # This repo creates a tag on every Renovate automerge of the container image version.
+    semver: ">=0.0.0"
