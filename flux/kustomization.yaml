@@ -1,37 +1,26 @@
 ---
-# GitRepository: tells Flux where to pull the Home Assistant Kustomize manifests from.
-# Deploy this (and the Kustomization below) into the flux-system namespace, or whichever
-# namespace your Flux controllers are running in.
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: GitRepository
-metadata:
-  name: home-assistant
-  namespace: flux-system
-spec:
-  interval: 2h
-  ref:
-    # Automatically track the latest semver tag published by this repo's CI workflow.
-    # Change to `branch: main` if you prefer to track the main branch directly.
-    semver: ">=2024.1.1"
-  url: https://github.com/turbo5000c/home-assistant-kustomize.git
-
----
-# Kustomization: tells Flux which path inside the GitRepository to reconcile and into
-# which namespace to deploy the resources.
+# FluxCD Kustomization — instructs Flux to apply the home-assistant manifests
+# from the GitRepository defined in gitrepository.yaml.
+# Apply this to your Flux management cluster alongside flux/gitrepository.yaml.
+#
+# Docs: https://fluxcd.io/flux/components/kustomize/kustomizations/
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: home-assistant
   namespace: flux-system
 spec:
-  interval: 4h
-  path: "./"
-  prune: true
+  interval: 10m
   sourceRef:
     kind: GitRepository
-    name: home-assistant
-    namespace: flux-system
+    name: home-assistant-kustomize
+  path: "./"
   targetNamespace: home-assistant
+  prune: true
+  wait: true
+  timeout: 5m
+  dependsOn:
+    - name: infrastructure-configs
   # ---------------------------------------------------------------------------
   # Optional patches — uncomment any block you need.
   # ---------------------------------------------------------------------------
